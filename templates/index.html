@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger</title>
+</head>
+<body>
+    <h1>Messenger</h1>
+    {% if current_user.is_authenticated %}
+        <h1>User: {{ current_user.username }} - {{ current_user.email }}</h1>
+    {% endif %}
+    <meta name="session_id" content="{{ session_id }}">
+    <form action="/send_message" method="post">
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <br>
+        <button type="submit" {% if not current_user.is_authenticated or current_user.id != queue_value %}disabled{% endif %}>Send ({{ current_user.username }})</button>
+    </form>
+    <hr>
+    <h2>Messages:</h2>
+    <ul>
+        {% for message in messages %}
+            <li><strong>{{ message.user.username }}</strong>: {{ message.content }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
